@@ -53,20 +53,26 @@ Este projeto implementa um **framework de agentes efêmeros com modo agêntico o
 ## **🗂 Estrutura de Pastas**
 
 ```
-/router         → Router (interpretador de intenção)
-  └── router.py
-/planner        → Planner (gera AgentSpec + bootstrap_plan)
-  └── planner.py
-/factory        → Factory para criar agentes a partir do AgentSpec
-  └── factory.py
-/runtime        → Spawner + loops + registry
-  └── runtime.py
-/tools          → Ferramentas simuladas (API, Notifier, RAG)
-  ├── rail_api.py
-  ├── notifier.py
-  └── retriever.py
-/main.py        → Fluxo principal (chat → router → planner → executor)
-/README.md      → Documentação
+agents/
+├── router/         → Router (interpretador de intenção)
+│   └── router.py
+├── planner/        → Planner (gera AgentSpec + bootstrap_plan)
+│   └── planner.py
+├── factory/        → Factory para criar agentes a partir do AgentSpec
+│   └── factory.py
+├── runtime/        → Spawner + loops + registry
+│   └── runtime.py
+├── tools/          → Ferramentas simuladas (API, Notifier, RAG)
+│   ├── rail_api.py
+│   ├── notifier.py
+│   └── retriever.py
+└── prompts/        → Prompts e instruções para agentes
+    ├── router.md
+    ├── planner.md
+    └── agent_templates.md
+
+app.py              → Fluxo principal (chat → router → planner → executor)
+README.md           → Documentação
 ```
 
 ---
@@ -207,10 +213,14 @@ Regra:
 
 ## **✅ Próximos Passos**
 - Implementar os módulos conforme esta arquitetura:
-  - `router.py`, `planner.py`, `factory.py`, `runtime.py`.
-- Criar mocks:
+  - `agents/router/router.py`, `agents/planner/planner.py`, `agents/factory/factory.py`, `agents/runtime/runtime.py`.
+- Criar prompts em `agents/prompts/`:
+  - **Router prompt**: `agents/prompts/router.md` (instruções para interpretação de intenção).
+  - **Planner prompt**: `agents/prompts/planner.md` (instruções para geração de AgentSpec).
+  - **Agent templates**: `agents/prompts/agent_templates.md` (templates para diferentes tipos de agentes).
+- Criar mocks em `agents/tools/`:
   - **API Progress Rail**: `/get_telemetry`, `/get_status`, `/end_of_trip`.
   - **Retriever** para RAG (simulado com dicionário).
   - **Notifier**: print no console.
-- Criar `main.py`:
+- Criar `app.py` (na raiz):
   - Recebe entrada → Router → (Planner se necessário) → Executor → Runtime.
